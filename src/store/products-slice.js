@@ -1,7 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { cartSliceActions } from "./cart-slice";
 
-const initialProductState = { items: [], itemsQty: 0 , isCartContentChanged: false};
+const initialProductState = {
+  items: [],
+  itemsQty: 0,
+  isCartContentChanged: false,
+};
 
 const productSlice = createSlice({
   name: "product",
@@ -11,7 +15,7 @@ const productSlice = createSlice({
       const newItem = action.payload;
       const existingItem = state.items.find((item) => item.id === newItem.id);
       state.itemsQty++;
-      state.isCartContentChanged = true
+      state.isCartContentChanged = true;
       if (!existingItem) {
         state.items.push({
           id: newItem.id,
@@ -27,7 +31,7 @@ const productSlice = createSlice({
     },
     deleteItem(state, action) {
       state.itemsQty--;
-      state.isCartContentChanged = true
+      state.isCartContentChanged = true;
       const deletingItemId = action.payload;
       const existingItem = state.items.find(
         (item) => item.id === deletingItemId
@@ -61,7 +65,10 @@ export const sendCartData = (cartData) => {
         "https://react-course-project-ffeb9-default-rtdb.europe-west1.firebasedatabase.app/cart.json",
         {
           method: "PUT",
-          body: JSON.stringify({items: cartData.items, itemsQty: cartData.itemsQty} ),
+          body: JSON.stringify({
+            items: cartData.items,
+            itemsQty: cartData.itemsQty,
+          }),
         }
       );
       if (!response.ok) {
@@ -89,37 +96,40 @@ export const sendCartData = (cartData) => {
   };
 };
 
-export const getCartData = () =>{
-    return async (dispatchAction)=>{
-        const getDataHttpRequest = async () =>{
-            const response = await fetch('https://react-course-project-ffeb9-default-rtdb.europe-west1.firebasedatabase.app/cart.json')
-            if(!response.ok){
-                throw new Error('nemogu izvlech dannie')
-            }
+export const getCartData = () => {
+  return async (dispatchAction) => {
+    const getDataHttpRequest = async () => {
+      const response = await fetch(
+        "https://react-course-project-ffeb9-default-rtdb.europe-west1.firebasedatabase.app/cart.json"
+      );
+      if (!response.ok) {
+        throw new Error("nemogu izvlech dannie");
+      }
 
-            const responseData = await response.json()
+      const responseData = await response.json();
 
-            return responseData
-        }
+      return responseData;
+    };
 
-        try{
-            const cartData = await getDataHttpRequest()
-            dispatchAction(productSlice.actions.updateCart({
-                items: cartData.items || [],
-                itemsQty: cartData.itemsQty ,
-            }))
-
-        } catch(error) {
-            dispatchAction(
-                cartSliceActions.showStatusMessage({
-                  status: "error",
-                  title: "error with data sending",
-                  message: "Cart Data is not Sended to DB",
-                })
-              )
-        }
+    try {
+      const cartData = await getDataHttpRequest();
+      dispatchAction(
+        productSlice.actions.updateCart({
+          items: cartData.items || [],
+          itemsQty: cartData.itemsQty,
+        })
+      );
+    } catch (error) {
+      dispatchAction(
+        cartSliceActions.showStatusMessage({
+          status: "error",
+          title: "error with data sending",
+          message: "Cart Data is not Sended to DB",
+        })
+      );
     }
-}
+  };
+};
 
 export const productSliceActions = productSlice.actions;
 export default productSlice;

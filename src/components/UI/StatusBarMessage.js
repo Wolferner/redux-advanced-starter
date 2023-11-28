@@ -1,12 +1,12 @@
-import styles from './StatusBarMessage.module.css';
+import styles from "./StatusBarMessage.module.css";
 
 const StatusBarMessage = (props) => {
-  let statusClasses = '';
+  let statusClasses = "";
 
-  if (props.status === 'error') {
+  if (props.status === "error") {
     statusClasses = styles.error;
   }
-  if (props.status === 'success') {
+  if (props.status === "success") {
     statusClasses = styles.success;
   }
 

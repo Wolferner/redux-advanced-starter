@@ -4,13 +4,13 @@ import styles from "./ProductItem.module.css";
 import { productSliceActions } from "../../store/products-slice";
 
 const ProductItem = (props) => {
-  const { id,  title, price, description } = props;
+  const { id, title, price, description } = props;
 
   // const products = useSelector((state)=> state.product)
 
-  const dispatchAction = useDispatch()
+  const dispatchAction = useDispatch();
 
-  const addProductHandler = () =>{
+  const addProductHandler = () => {
     // const updatedItemsQuantity = products.itemsQty + 1
 
     // const updatedItems = products.items.slice()
@@ -39,8 +39,10 @@ const ProductItem = (props) => {
 
     // dispatchFunc(productSliceActions.updateCart(updatedCart))
 
-    dispatchAction(productSliceActions.addItem({id:id, title:title, price:price}))
-  } 
+    dispatchAction(
+      productSliceActions.addItem({ id: id, title: title, price: price })
+    );
+  };
 
   return (
     <li className={styles.item}>
